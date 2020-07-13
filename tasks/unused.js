@@ -32,7 +32,9 @@ module.exports = function (grunt) {
       days: null,
       reportOutput: false,
       fail: false,
-      exclude: []
+      exclude: [],
+	  warnCaps: false,
+      warnSpaces: false
     });
 
     //get current date and time
@@ -112,7 +114,14 @@ module.exports = function (grunt) {
     options.exclude.map((ex) => {
       unused = _.filter(unused, (_unused) => !_unused.includes(ex));
     });
-
+	
+	if (options.warnSpaces) {
+      assets.map((asset) => {
+        if (asset.includes(" ")) {
+          grunt.log.warn(`${asset} contains blank character`);
+        }
+      });
+    }
 
     // output number of unused files
     if (unused.length) {
